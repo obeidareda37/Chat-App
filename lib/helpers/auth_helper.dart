@@ -1,3 +1,4 @@
+import 'package:chat_app/service/custom_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthHelper {
@@ -16,16 +17,13 @@ class AuthHelper {
       );
       print(await userCredential.user.getIdToken());
       print(userCredential.user.uid);
-
-    }
-    on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
-    }
-    on Exception catch (e) {
+    } on Exception catch (e) {
       print(e);
     }
   }
@@ -41,18 +39,35 @@ class AuthHelper {
       print(userCredential.user.uid);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        CustomDialog.customDialog.showCustomDialog(message: 'No user found for that email.');
+        // print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        CustomDialog.customDialog.showCustomDialog(message: 'Wrong password provided for that user.');
+        // print('Wrong password provided for that user.');
       }
     } on Exception catch (e) {
       print(e);
     }
   }
 
-  resetPassword(String email) async {}
+  resetPassword(String email) async {
+    await firebaseAuth.sendPasswordResetEmail(email: email);
+    CustomDialog.customDialog.showCustomDialog(message: 'we have sent email for reset password, please check your email');
 
-  verifyEmail(String email) async {}
+  }
 
-  logOut() async {}
+  verifyEmail() async {
+    await firebaseAuth.currentUser.sendEmailVerification();
+    CustomDialog.customDialog.showCustomDialog(message: 'verification email has been sent,please check your email');
+
+    // print('verification email has been sent');
+  }
+
+  logOut() async {
+    firebaseAuth.signOut();
+  }
+
+  bool checkEmailVerification() {
+    return firebaseAuth.currentUser?.emailVerified ?? false;
+  }
 }
