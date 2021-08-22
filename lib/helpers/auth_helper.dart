@@ -7,7 +7,7 @@ class AuthHelper {
   static AuthHelper authHelper = AuthHelper._();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  signUp(String email, String password) async {
+  Future<UserCredential>signUp(String email, String password) async {
     //userCredential == info for user || IDf for user
     try {
       UserCredential userCredential =
@@ -15,6 +15,7 @@ class AuthHelper {
         email: email,
         password: password,
       );
+      return userCredential;
       print(await userCredential.user.getIdToken());
       print(userCredential.user.uid);
     } on FirebaseAuthException catch (e) {
