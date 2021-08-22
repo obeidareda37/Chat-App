@@ -17,8 +17,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController userNameController = TextEditingController();
-
   bool obscureText = false;
 
   @override
@@ -57,16 +55,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 120,
                   ),
                   CustomTextField(
-                    textInputType: TextInputType.text,
-                    hint: 'UserName',
+                    hint: 'first Name',
                     prefixIcon: Icon(
-                      Icons.person_outline,
+                      Icons.email_outlined,
                       color: Colors.grey,
                     ),
-                    controller: userNameController,
+                    controller: provider.fNameController,
                   ),
-                  SizedBox(
-                    height: 15,
+                  CustomTextField(
+                    hint: 'last Name',
+                    prefixIcon: Icon(
+                      Icons.email_outlined,
+                      color: Colors.grey,
+                    ),
+                    controller: provider.lNameController,
                   ),
                   CustomTextField(
                     hint: 'Email',
@@ -75,6 +77,22 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: Colors.grey,
                     ),
                     controller: provider.emailController,
+                  ),
+                  CustomTextField(
+                    hint: 'Country',
+                    prefixIcon: Icon(
+                      Icons.email_outlined,
+                      color: Colors.grey,
+                    ),
+                    controller: provider.countryController,
+                  ),
+                  CustomTextField(
+                    hint: 'City',
+                    prefixIcon: Icon(
+                      Icons.email_outlined,
+                      color: Colors.grey,
+                    ),
+                    controller: provider.cityController,
                   ),
                   SizedBox(
                     height: 15,
@@ -106,7 +124,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 50,
                     label: 'Sign Up',
                   ),
-
                   SizedBox(
                     height: 220,
                   ),
@@ -124,8 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          RouteHelper.routeHelper
-                              .goToPage(LoginPage.routeName);
+                          RouteHelper.routeHelper.goToPage(LoginPage.routeName);
                         },
                         child: CustomText(
                           text: 'Login',
