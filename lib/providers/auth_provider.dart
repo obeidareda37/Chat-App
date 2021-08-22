@@ -4,7 +4,7 @@ import 'package:chat_app/helpers/auth_helper.dart';
 import 'package:chat_app/helpers/firebase_helper.dart';
 import 'package:chat_app/helpers/shared_pref.dart';
 import 'package:chat_app/models/register_request.dart';
-import 'package:chat_app/service/custom_dialog.dart';
+import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/service/routes_helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +16,7 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController lNameController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController cityController = TextEditingController();
+  List<UserModel> users = List<UserModel>();
 
   resetController() {
     emailController.clear();
@@ -56,8 +57,9 @@ class AuthProvider extends ChangeNotifier {
 
     // bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
     // if (isVerifiedEmail) {
-    FirebaseHelpers.firebaseHelpers.getUserFromFirestore(userCredential.user.uid);
-      RouteHelper.routeHelper.goToPageReplacement(HomePage.routeName);
+    FirebaseHelpers.firebaseHelpers
+        .getUserFromFirestore(userCredential.user.uid);
+    RouteHelper.routeHelper.goToPageReplacement(HomePage.routeName);
     // } else {
     //   CustomDialog.customDialog.showCustomDialog(
     //     message:
@@ -78,5 +80,11 @@ class AuthProvider extends ChangeNotifier {
   sendVerification() async {
     AuthHelper.authHelper.verifyEmail();
     AuthHelper.authHelper.logOut();
+  }
+
+  Future<List<UserModel>> getAllUserFromFirestore() async {
+    users = await FirebaseHelpers.firebaseHelpers.getAllUsersFromFirestore();
+    return users;
+    print(users.length);
   }
 }
