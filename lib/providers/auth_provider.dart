@@ -49,18 +49,19 @@ class AuthProvider extends ChangeNotifier {
   }
 
   login() async {
-    await AuthHelper.authHelper
+    UserCredential userCredential = await AuthHelper.authHelper
         .signIn(emailController.text, passwordController.text);
-    bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
-    if (isVerifiedEmail) {
+    // bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
+    // if (isVerifiedEmail) {
+    FirebaseHelpers.firebaseHelpers.getUserFromFirestore(userCredential.user.uid);
       RouteHelper.routeHelper.goToPageReplacement(HomePage.routeName);
-    } else {
-      CustomDialog.customDialog.showCustomDialog(
-        message:
-            'you have to verify your email, press ok to send another email',
-        function: sendVerification(),
-      );
-    }
+    // } else {
+    //   CustomDialog.customDialog.showCustomDialog(
+    //     message:
+    //         'you have to verify your email, press ok to send another email',
+    //     function: sendVerification(),
+    //   );
+    // }
     resetController();
   }
 

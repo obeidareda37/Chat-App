@@ -29,13 +29,14 @@ class AuthHelper {
     }
   }
 
-  signIn(String email, String password) async {
+  Future<UserCredential>signIn(String email, String password) async {
     try {
       UserCredential userCredential =
           await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      return userCredential;
       print(await userCredential.user.getIdToken());
       print(userCredential.user.uid);
     } on FirebaseAuthException catch (e) {

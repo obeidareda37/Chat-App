@@ -9,11 +9,18 @@ class FirebaseHelpers {
 
   addUserToFirestore(RegisterRequest registerRequest) async {
     try {
-      DocumentReference documentReference = await firebaseFirestore
+      await firebaseFirestore
           .collection('User')
-          .add(registerRequest.toMap());
+          .doc(registerRequest.id)
+          .set(registerRequest.toMap());
     } catch (e) {
       print(e);
     }
+  }
+
+  getUserFromFirestore(String userId) async {
+    DocumentSnapshot documentSnapshot =
+        await firebaseFirestore.collection('User').doc(userId).get();
+    print(documentSnapshot);
   }
 }
