@@ -8,6 +8,8 @@ import 'package:chat_app/widget/image_screen_widget.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatefulWidget {
+  static final routeName = 'welcome';
+
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }

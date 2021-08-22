@@ -1,5 +1,6 @@
 import 'package:chat_app/auth/view/register_page.dart';
 import 'package:chat_app/auth/view/rest_password.dart';
+import 'package:chat_app/helpers/shared_pref.dart';
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/service/routes_helpers.dart';
 import 'package:chat_app/widget/custom_button.dart';

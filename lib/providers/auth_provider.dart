@@ -2,6 +2,7 @@ import 'package:chat_app/auth/view/home_page.dart';
 import 'package:chat_app/auth/view/login_page.dart';
 import 'package:chat_app/helpers/auth_helper.dart';
 import 'package:chat_app/helpers/firebase_helper.dart';
+import 'package:chat_app/helpers/shared_pref.dart';
 import 'package:chat_app/models/register_request.dart';
 import 'package:chat_app/service/custom_dialog.dart';
 import 'package:chat_app/service/routes_helpers.dart';
@@ -51,6 +52,8 @@ class AuthProvider extends ChangeNotifier {
   login() async {
     UserCredential userCredential = await AuthHelper.authHelper
         .signIn(emailController.text, passwordController.text);
+    SpHelper.spHelper.saveUser(true);
+
     // bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
     // if (isVerifiedEmail) {
     FirebaseHelpers.firebaseHelpers.getUserFromFirestore(userCredential.user.uid);

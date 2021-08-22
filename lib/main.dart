@@ -2,7 +2,9 @@ import 'package:chat_app/auth/view/home_page.dart';
 import 'package:chat_app/auth/view/login_page.dart';
 import 'package:chat_app/auth/view/rest_password.dart';
 import 'package:chat_app/auth/view/register_page.dart';
+import 'package:chat_app/auth/view/splash_screen.dart';
 import 'package:chat_app/auth/view/welcome_page.dart';
+import 'package:chat_app/helpers/shared_pref.dart';
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/service/routes_helpers.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +13,8 @@ import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SpHelper.spHelper.initSharedPreferences();
+
   runApp(
     ChangeNotifierProvider<AuthProvider>(
       create: (context)=> AuthProvider(),
@@ -21,6 +25,7 @@ void main() {
           RegisterPage.routeName:(context)=>RegisterPage(),
           ResetPassword.routeName:(context)=>ResetPassword(),
           HomePage.routeName:(context)=>HomePage(),
+          WelcomePage.routeName:(context)=>WelcomePage(),
         },
         navigatorKey: RouteHelper.routeHelper.navKey,
         home: App(),
@@ -58,7 +63,7 @@ class _AppState extends State<App> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return WelcomePage();
+          return SplashScreen();
         }
         return Scaffold(
           body: Center(
