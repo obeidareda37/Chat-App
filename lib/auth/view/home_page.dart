@@ -34,27 +34,29 @@ class _HomePageState extends State<HomePage> {
     get();
     return Scaffold(
       body: SafeArea(
-        child: ListView.builder(
-            itemCount: usermodels.length,
-            itemBuilder: (context, index) {
-              return Text(usermodels[index].email);
-            }),
-        //child: Container(child: Center(child: Text('home')),),
-        //     child: FutureBuilder<List<UserModel>>(
-        //   future: FirebaseHelpers.firebaseHelpers.getAllUsersFromFirestore(),
-        //   builder: (context, snapShot) {
-        //     if (snapShot.connectionState == ConnectionState.waiting) {
-        //       return Center(
-        //         child: CircularProgressIndicator(),
-        //       );
-        //     } else {
-        //       usermodels = snapShot.data;
-        //       return ListView(
-        //         children: usermodels.map((e) => Text(e.email)).toList(),
-        //       );
-        //     }
-        //   },
-        // )),
+        // child: ListView.builder(
+        //     itemCount: usermodels.length,
+        //     itemBuilder: (context, index) {
+        //       return Text(usermodels[index].email);
+        //     }),
+        // child: Container(
+        //   child: Center(child: Text('home')),
+        // ),
+        child: FutureBuilder<List<UserModel>>(
+          future: FirebaseHelpers.firebaseHelpers.getAllUsersFromFirestore(),
+          builder: (context, snapShot) {
+            if (snapShot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              usermodels = snapShot.data;
+              return ListView(
+                children: usermodels.map((e) => Text(e.email)).toList(),
+              );
+            }
+          },
+        ),
       ),
     );
   }
