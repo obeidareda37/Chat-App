@@ -1,3 +1,4 @@
+import 'package:chat_app/models/country_model.dart';
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/service/routes_helpers.dart';
 import 'package:chat_app/widget/custom_button.dart';
@@ -111,6 +112,39 @@ class _RegisterPageState extends State<RegisterPage> {
                         obscureText = !obscureText;
                       });
                     },
+                  ),
+                  Container(
+                    child: DropdownButton<CountryModel>(
+                      isExpanded: true,
+                      underline: Container(),
+                      onChanged: (x){
+                        provider.selectCountry(x);
+                      },
+                      value: provider.selectedCountry,
+                      items: provider.countries.map((e) {
+                        return DropdownMenuItem<CountryModel>(
+                          child: Text(e.name),
+                          value: e,
+                        );
+                      }).toList(),
+                    ),
+                  ),
+
+                  Container(
+                    child: DropdownButton<dynamic>(
+                      isExpanded: true,
+                      underline: Container(),
+                      onChanged: (x){
+                        provider.selectCity(x);
+                      },
+                      value: provider.selectedCity,
+                      items: provider.cities.map((e) {
+                        return DropdownMenuItem<dynamic>(
+                          child: Text(e),
+                          value: e,
+                        );
+                      }).toList(),
+                    ),
                   ),
                   SizedBox(
                     height: 50,

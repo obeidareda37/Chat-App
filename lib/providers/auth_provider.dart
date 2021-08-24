@@ -3,13 +3,18 @@ import 'package:chat_app/auth/view/login_page.dart';
 import 'package:chat_app/helpers/auth_helper.dart';
 import 'package:chat_app/helpers/firebase_helper.dart';
 import 'package:chat_app/helpers/shared_pref.dart';
+import 'package:chat_app/models/country_model.dart';
 import 'package:chat_app/models/register_request.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/service/routes_helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 class AuthProvider extends ChangeNotifier {
+  AuthProvider(){
+    getCountriesFromFirestore();
+  }
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController fNameController = TextEditingController();
@@ -25,6 +30,30 @@ class AuthProvider extends ChangeNotifier {
     lNameController.clear();
     countryController.clear();
     cityController.clear();
+  }
+
+  List<CountryModel> countries;
+  List<dynamic> cities = [];
+  CountryModel selectedCountry;
+  String selectedCity;
+  selectCountry(CountryModel countryModel){
+    this.selectedCountry=countryModel;
+    this.cities=countryModel.cities;
+    selectCity(cities.first.toString());
+    notifyListeners();
+  }
+  selectCity(dynamic city){
+    this.selectedCity=city;
+
+    notifyListeners();
+  }
+
+  getCountriesFromFirestore() async {
+    List<CountryModel> countries =
+        await FirebaseHelpers.firebaseHelpers.getAllCountry();
+    this.countries = countries;
+    selectCountry(countries.first);
+    notifyListeners();
   }
 
   register() async {
