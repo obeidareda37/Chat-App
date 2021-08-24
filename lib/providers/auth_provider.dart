@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:chat_app/auth/view/home_page.dart';
 import 'package:chat_app/auth/view/login_page.dart';
 import 'package:chat_app/helpers/auth_helper.dart';
-import 'package:chat_app/helpers/firebase_helper.dart';
+import 'package:chat_app/helpers/firestorage_helper.dart';
+import 'package:chat_app/helpers/firestore_helper.dart';
 import 'package:chat_app/helpers/shared_pref.dart';
 import 'package:chat_app/models/country_model.dart';
 import 'package:chat_app/models/register_request.dart';
@@ -10,11 +13,13 @@ import 'package:chat_app/service/routes_helpers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthProvider extends ChangeNotifier {
-  AuthProvider(){
+  AuthProvider() {
     getCountriesFromFirestore();
   }
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController fNameController = TextEditingController();
@@ -36,14 +41,16 @@ class AuthProvider extends ChangeNotifier {
   List<dynamic> cities = [];
   CountryModel selectedCountry;
   String selectedCity;
-  selectCountry(CountryModel countryModel){
-    this.selectedCountry=countryModel;
-    this.cities=countryModel.cities;
+
+  selectCountry(CountryModel countryModel) {
+    this.selectedCountry = countryModel;
+    this.cities = countryModel.cities;
     selectCity(cities.first.toString());
     notifyListeners();
   }
-  selectCity(dynamic city){
-    this.selectedCity=city;
+
+  selectCity(dynamic city) {
+    this.selectedCity = city;
 
     notifyListeners();
   }
@@ -56,11 +63,27 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  ////////////////////////////////////////////////////////////////
+  /// upload Image
+
+  File file;
+
+  selectFile() async {
+    XFile imageFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    this.file = File(imageFile.path);
+    notifyListeners();
+  }
+
+  //////////////////////////////////////////////////////////////
+
   register() async {
     try {
       UserCredential userCredential = await AuthHelper.authHelper
           .signUp(emailController.text, passwordController.text);
+     String imageUrl = await FirebaseStorageHelper.firebaseStorageHelper.uploadImage(file);
       RegisterRequest registerRequest = RegisterRequest(
+        imageUrl: imageUrl,
         id: userCredential.user.uid,
         fname: fNameController.text,
         lname: lNameController.text,

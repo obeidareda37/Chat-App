@@ -1,4 +1,4 @@
-import 'package:chat_app/helpers/firebase_helper.dart';
+import 'package:chat_app/helpers/firestore_helper.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:flutter/material.dart';

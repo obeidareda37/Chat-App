@@ -5,6 +5,7 @@ import 'package:chat_app/widget/custom_button.dart';
 import 'package:chat_app/widget/custom_text.dart';
 import 'package:chat_app/widget/custom_text_field.dart';
 import 'package:chat_app/widget/custom_text_password_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,6 +55,22 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(
                     height: 120,
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      provider.selectFile();
+                    },
+                    child: Container(
+                      height: 200,
+                      width: 200,
+                      color: Colors.grey,
+                      child: provider.file == null
+                          ? Container()
+                          : Image.file(
+                              provider.file,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
                   ),
                   CustomTextField(
                     hint: 'first Name',
@@ -117,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: DropdownButton<CountryModel>(
                       isExpanded: true,
                       underline: Container(),
-                      onChanged: (x){
+                      onChanged: (x) {
                         provider.selectCountry(x);
                       },
                       value: provider.selectedCountry,
@@ -129,12 +146,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       }).toList(),
                     ),
                   ),
-
                   Container(
                     child: DropdownButton<dynamic>(
                       isExpanded: true,
                       underline: Container(),
-                      onChanged: (x){
+                      onChanged: (x) {
                         provider.selectCity(x);
                       },
                       value: provider.selectedCity,
