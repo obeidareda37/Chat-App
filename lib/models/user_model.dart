@@ -23,8 +23,8 @@ class UserModel {
     this.email = map['email'];
     this.city = map['city'];
     this.country = map['country'];
-    this.fName = map['fName'];
-    this.lName = map['lName'];
+    this.fName = map['fname'];
+    this.lName = map['lname'];
     this.imageUrl = map['imageUrl'];
   }
 }

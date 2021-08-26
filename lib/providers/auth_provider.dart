@@ -28,12 +28,12 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController countryController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   List<UserModel> users = List<UserModel>();
-
   UserModel user;
 
   getUserFromFirestore() async {
     String userId = AuthHelper.authHelper.getUserId();
     user = await FirebaseHelpers.firebaseHelpers.getUserFromFirestore(userId);
+    notifyListeners();
   }
 
   resetController() {
@@ -59,7 +59,6 @@ class AuthProvider extends ChangeNotifier {
 
   selectCity(dynamic city) {
     this.selectedCity = city;
-
     notifyListeners();
   }
 
@@ -96,8 +95,8 @@ class AuthProvider extends ChangeNotifier {
         id: userCredential.user.uid,
         fname: fNameController.text,
         lname: lNameController.text,
-        city: cityController.text,
-        country: countryController.text,
+        city: selectedCity,
+        country: selectedCountry.name,
         email: emailController.text,
         password: passwordController.text,
       );

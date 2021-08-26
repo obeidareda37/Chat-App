@@ -96,22 +96,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     controller: provider.emailController,
                   ),
-                  CustomTextField(
-                    hint: 'Country',
-                    prefixIcon: Icon(
-                      Icons.email_outlined,
-                      color: Colors.grey,
-                    ),
-                    controller: provider.countryController,
-                  ),
-                  CustomTextField(
-                    hint: 'City',
-                    prefixIcon: Icon(
-                      Icons.email_outlined,
-                      color: Colors.grey,
-                    ),
-                    controller: provider.cityController,
-                  ),
                   SizedBox(
                     height: 15,
                   ),
