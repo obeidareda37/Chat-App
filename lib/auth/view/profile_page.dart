@@ -31,7 +31,9 @@ class _ProfilePageState extends State<ProfilePage> {
             icon: Icon(Icons.edit),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Provider.of<AuthProvider>(context, listen: false).logOut();
+            },
             icon: Icon(Icons.logout),
           ),
         ],
@@ -39,6 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Consumer<AuthProvider>(
         builder: (context, provider, x) {
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CircleAvatar(
                 radius: 80,

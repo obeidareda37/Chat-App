@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chat_app/auth/view/home_page.dart';
 import 'package:chat_app/auth/view/login_page.dart';
+import 'package:chat_app/auth/view/welcome_page.dart';
 import 'package:chat_app/helpers/auth_helper.dart';
 import 'package:chat_app/helpers/firestorage_helper.dart';
 import 'package:chat_app/helpers/firestore_helper.dart';
@@ -28,12 +29,13 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController cityController = TextEditingController();
   List<UserModel> users = List<UserModel>();
 
-
   UserModel user;
-  getUserFromFirestore()async{
-    String userId =AuthHelper.authHelper.getUserId();
+
+  getUserFromFirestore() async {
+    String userId = AuthHelper.authHelper.getUserId();
     user = await FirebaseHelpers.firebaseHelpers.getUserFromFirestore(userId);
   }
+
   resetController() {
     emailController.clear();
     passwordController.clear();
@@ -87,7 +89,8 @@ class AuthProvider extends ChangeNotifier {
     try {
       UserCredential userCredential = await AuthHelper.authHelper
           .signUp(emailController.text, passwordController.text);
-     String imageUrl = await FirebaseStorageHelper.firebaseStorageHelper.uploadImage(file);
+      String imageUrl =
+          await FirebaseStorageHelper.firebaseStorageHelper.uploadImage(file);
       RegisterRequest registerRequest = RegisterRequest(
         imageUrl: imageUrl,
         id: userCredential.user.uid,
@@ -106,6 +109,11 @@ class AuthProvider extends ChangeNotifier {
       // TODO
     }
     resetController();
+  }
+
+  logOut() async {
+    await AuthHelper.authHelper.logOut();
+    RouteHelper.routeHelper.goToPageReplacement(WelcomePage.routeName);
   }
 
   login() async {
