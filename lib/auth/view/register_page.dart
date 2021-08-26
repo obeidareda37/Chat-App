@@ -57,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 120,
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       provider.selectFile();
                     },
                     child: Container(

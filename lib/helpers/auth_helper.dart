@@ -7,6 +7,9 @@ class AuthHelper {
   static AuthHelper authHelper = AuthHelper._();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
+  String getUserId(){
+    return firebaseAuth.currentUser.uid;
+  }
   Future<UserCredential>signUp(String email, String password) async {
     //userCredential == info for user || IDf for user
     try {

@@ -1,8 +1,10 @@
 import 'package:chat_app/auth/view/home_page.dart';
 import 'package:chat_app/auth/view/login_page.dart';
+import 'package:chat_app/auth/view/profile_page.dart';
 import 'package:chat_app/auth/view/rest_password.dart';
 import 'package:chat_app/auth/view/register_page.dart';
 import 'package:chat_app/auth/view/splash_screen.dart';
+import 'package:chat_app/auth/view/user_page.dart';
 import 'package:chat_app/auth/view/welcome_page.dart';
 import 'package:chat_app/helpers/shared_pref.dart';
 import 'package:chat_app/providers/auth_provider.dart';
@@ -26,6 +28,8 @@ void main() {
           ResetPassword.routeName:(context)=>ResetPassword(),
           HomePage.routeName:(context)=>HomePage(),
           WelcomePage.routeName:(context)=>WelcomePage(),
+          UserPage.routeName:(context)=>UserPage(),
+          ProfilePage.routeName:(context)=>ProfilePage(),
         },
         navigatorKey: RouteHelper.routeHelper.navKey,
         home: App(),

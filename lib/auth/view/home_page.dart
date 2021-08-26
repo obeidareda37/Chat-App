@@ -1,3 +1,5 @@
+import 'package:chat_app/auth/view/profile_page.dart';
+import 'package:chat_app/auth/view/user_page.dart';
 import 'package:chat_app/helpers/firestore_helper.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:chat_app/providers/auth_provider.dart';
@@ -32,30 +34,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     get();
-    return Scaffold(
-      body: SafeArea(
-        // child: ListView.builder(
-        //     itemCount: usermodels.length,
-        //     itemBuilder: (context, index) {
-        //       return Text(usermodels[index].email);
-        //     }),
-        // child: Container(
-        //   child: Center(child: Text('home')),
-        // ),
-        child: FutureBuilder<List<UserModel>>(
-          future: FirebaseHelpers.firebaseHelpers.getAllUsersFromFirestore(),
-          builder: (context, snapShot) {
-            if (snapShot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              usermodels = snapShot.data;
-              return ListView(
-                children: usermodels.map((e) => Text(e.email)).toList(),
-              );
-            }
-          },
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        body: TabBarView(
+          children: [UserPage(), ProfilePage()],
         ),
       ),
     );

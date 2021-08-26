@@ -20,10 +20,10 @@ class FirebaseHelpers {
     }
   }
 
-  getUserFromFirestore(String userId) async {
+  Future<UserModel> getUserFromFirestore(String userId) async {
     DocumentSnapshot documentSnapshot =
         await firebaseFirestore.collection('User').doc(userId).get();
-    print(documentSnapshot);
+    return UserModel.fromMap(documentSnapshot.data());
   }
 
   Future<List<UserModel>> getAllUsersFromFirestore() async {

@@ -28,6 +28,12 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController cityController = TextEditingController();
   List<UserModel> users = List<UserModel>();
 
+
+  UserModel user;
+  getUserFromFirestore()async{
+    String userId =AuthHelper.authHelper.getUserId();
+    user = await FirebaseHelpers.firebaseHelpers.getUserFromFirestore(userId);
+  }
   resetController() {
     emailController.clear();
     passwordController.clear();
