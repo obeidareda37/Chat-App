@@ -7,10 +7,11 @@ class AuthHelper {
   static AuthHelper authHelper = AuthHelper._();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  String getUserId(){
+  String getUserId() {
     return firebaseAuth.currentUser.uid;
   }
-  Future<UserCredential>signUp(String email, String password) async {
+
+  Future<UserCredential> signUp(String email, String password) async {
     //userCredential == info for user || IDf for user
     try {
       UserCredential userCredential =
@@ -32,7 +33,7 @@ class AuthHelper {
     }
   }
 
-  Future<UserCredential>signIn(String email, String password) async {
+  Future<UserCredential> signIn(String email, String password) async {
     try {
       UserCredential userCredential =
           await firebaseAuth.signInWithEmailAndPassword(
@@ -44,10 +45,12 @@ class AuthHelper {
       print(userCredential.user.uid);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        CustomDialog.customDialog.showCustomDialog(message: 'No user found for that email.');
+        CustomDialog.customDialog
+            .showCustomDialog(message: 'No user found for that email.');
         // print('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        CustomDialog.customDialog.showCustomDialog(message: 'Wrong password provided for that user.');
+        CustomDialog.customDialog.showCustomDialog(
+            message: 'Wrong password provided for that user.');
         // print('Wrong password provided for that user.');
       }
     } on Exception catch (e) {
@@ -57,13 +60,15 @@ class AuthHelper {
 
   resetPassword(String email) async {
     await firebaseAuth.sendPasswordResetEmail(email: email);
-    CustomDialog.customDialog.showCustomDialog(message: 'we have sent email for reset password, please check your email');
-
+    CustomDialog.customDialog.showCustomDialog(
+        message:
+            'we have sent email for reset password, please check your email');
   }
 
   verifyEmail() async {
     await firebaseAuth.currentUser.sendEmailVerification();
-    CustomDialog.customDialog.showCustomDialog(message: 'verification email has been sent,please check your email');
+    CustomDialog.customDialog.showCustomDialog(
+        message: 'verification email has been sent,please check your email');
 
     // print('verification email has been sent');
   }
@@ -74,5 +79,13 @@ class AuthHelper {
 
   bool checkEmailVerification() {
     return firebaseAuth.currentUser?.emailVerified ?? false;
+  }
+
+  bool checkUserLoging() {
+    if (firebaseAuth.currentUser == null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

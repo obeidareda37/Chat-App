@@ -18,7 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    // Future.delayed(Duration(seconds: 2)).then((value) =>
+    //     Provider.of<AuthProvider>(context, listen: false).checkLogin());
     Timer(
       Duration(seconds: 3),
       () => firstTime(),

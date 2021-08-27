@@ -47,4 +47,11 @@ class FirebaseHelpers {
 
     return countries;
   }
+
+  updateProfile(UserModel userModel) async {
+    await firebaseFirestore
+        .collection('User')
+        .doc(userModel.id)
+        .update(userModel.toMap());
+  }
 }

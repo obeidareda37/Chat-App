@@ -8,6 +8,7 @@ class UserModel {
   String fName;
   String lName;
   String imageUrl;
+
   UserModel({
     @required this.id,
     @required this.email,
@@ -26,5 +27,15 @@ class UserModel {
     this.fName = map['fname'];
     this.lName = map['lname'];
     this.imageUrl = map['imageUrl'];
+  }
+
+  toMap() {
+    return {
+      'city': this.city,
+      'country': this.country,
+      'fname': this.fName,
+      'lname': this.lName,
+      'imageUrl': this.imageUrl,
+    };
   }
 }

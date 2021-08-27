@@ -152,4 +152,57 @@ class AuthProvider extends ChangeNotifier {
     return users;
     print(users.length);
   }
+
+  // checkLogin() {
+  //   bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();
+  //   print(FirebaseAuth.instance.currentUser);
+  //   if (isLoggedIn) {
+  //     RouteHelper.routeHelper.goToPageWithReplacement(HomePage.routeName);
+  //   } else {
+  //     RouteHelper.routeHelper.goToPageWithReplacement(AuthMainPage.routeName);
+  //   }
+  // }
+  fillControllers() {
+    fNameController.text = user.fName;
+    lNameController.text = user.lName;
+    countryController.text = user.country;
+    cityController.text = user.city;
+    emailController.text = user.email;
+  }
+
+  File updateFile;
+  captureUpdateProfileImage() async {
+    XFile file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    this.updateFile = File(file.path);
+    notifyListeners();
+  }
+
+  updateProfile() async {
+    String imageUrl;
+    if (updateFile != null) {
+      imageUrl = await FirebaseStorageHelper.firebaseStorageHelper
+          .uploadImage(updateFile);
+      notifyListeners();
+    }
+    UserModel userModel = imageUrl == null
+        ? UserModel(
+            city: cityController.text,
+            country: countryController.text,
+            fName: fNameController.text,
+            lName: lNameController.text,
+            id: user.id,
+          )
+        : UserModel(
+            city: cityController.text,
+            country: countryController.text,
+            fName: fNameController.text,
+            lName: lNameController.text,
+            id: user.id,
+            imageUrl: imageUrl,
+          );
+
+    await FirebaseHelpers.firebaseHelpers.updateProfile(userModel);
+    getUserFromFirestore();
+    Navigator.of(RouteHelper.routeHelper.navKey.currentContext).pop();
+  }
 }

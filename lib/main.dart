@@ -4,6 +4,7 @@ import 'package:chat_app/auth/view/profile_page.dart';
 import 'package:chat_app/auth/view/rest_password.dart';
 import 'package:chat_app/auth/view/register_page.dart';
 import 'package:chat_app/auth/view/splash_screen.dart';
+import 'package:chat_app/auth/view/update_profile.dart';
 import 'package:chat_app/auth/view/user_page.dart';
 import 'package:chat_app/auth/view/welcome_page.dart';
 import 'package:chat_app/helpers/shared_pref.dart';
@@ -30,6 +31,7 @@ void main() {
           WelcomePage.routeName:(context)=>WelcomePage(),
           UserPage.routeName:(context)=>UserPage(),
           ProfilePage.routeName:(context)=>ProfilePage(),
+          UpdateProfilePage.routeName:(context)=>UpdateProfilePage(),
         },
         navigatorKey: RouteHelper.routeHelper.navKey,
         home: App(),
