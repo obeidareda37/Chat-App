@@ -1,3 +1,4 @@
+import 'package:chat_app/helpers/auth_helper.dart';
 import 'package:chat_app/models/country_model.dart';
 import 'package:chat_app/models/register_request.dart';
 import 'package:chat_app/models/user_model.dart';
@@ -8,6 +9,17 @@ class FirebaseHelpers {
 
   static FirebaseHelpers firebaseHelpers = FirebaseHelpers._();
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFirestoreStrem(){
+    return firebaseFirestore.collection('Chats').snapshots();
+  }
+  addMessageToFirbaseFirestore(Map map) async {
+    firebaseFirestore.collection('Chats').add({
+      ...map,
+      'userId': AuthHelper.authHelper.getUserId(),
+    });
+  }
 
   addUserToFirestore(RegisterRequest registerRequest) async {
     try {

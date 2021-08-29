@@ -64,9 +64,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Stack(
                         children: <Widget>[
                           CircleAvatar(
-                              radius: 80.0,
-                              backgroundImage:
-                                  AssetImage("assets/images/profile1.png")),
+                            radius: 80.0,
+                            backgroundImage: provider.file == null
+                                ? AssetImage("assets/images/profile1.png")
+                                : FileImage(provider.file),
+                          ),
                           Positioned(
                             bottom: 1.0,
                             right: 20.0,
@@ -204,20 +206,22 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     CustomButton(
                       function: () {
-                        if (formKey.currentState.validate() &&
-                            provider.file != null) {
-                          return;
-                        }
                         if (provider.file == null) {
                           print('chose photo');
                           CustomDialog.customDialog.showCustomDialog(
                               message: 'الرجاء اختيار الصورة');
+                        }
+
+                        if (formKey.currentState.validate() &&
+                            provider.file != null) {
+                          return;
                         } else {
                           print('UnSucsseflue');
                         }
-
-                        setState(() {});
-                        provider.register();
+                        setState(() {
+                          print("doneeee");
+                          provider.register();
+                        });
                       },
                       backgroundColor: Color(0xff1E58B6),
                       width: 220,
