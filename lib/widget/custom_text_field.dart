@@ -20,12 +20,15 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20),
       child: TextFormField(
         keyboardType: textInputType,
         controller: this.controller,
         onChanged: onChange,
         decoration: InputDecoration(
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10)
+          ),
           hintText: hint,
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,

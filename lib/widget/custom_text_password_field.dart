@@ -22,7 +22,7 @@ class CustomTextPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30),
+      margin: EdgeInsets.symmetric(horizontal: 20),
       child: TextFormField(
         keyboardType: textInputType,
         obscureText: obscureText,
@@ -30,6 +30,9 @@ class CustomTextPasswordField extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hint,
           prefixIcon: prefixIcon,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10)
+          ),
           suffixIcon: InkWell(
             onTap: onTap,
             child: Icon(obscureText?Icons.visibility:Icons.visibility_off,

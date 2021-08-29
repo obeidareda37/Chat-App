@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 50),
+                    margin: EdgeInsets.only(top: 30),
                     child: Center(
                       child: Column(
                         children: [
@@ -54,23 +54,61 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 120,
+                    height: 20,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      provider.selectFile();
-                    },
-                    child: Container(
-                      height: 200,
-                      width: 200,
-                      color: Colors.grey,
-                      child: provider.file == null
-                          ? Container()
-                          : Image.file(
-                              provider.file,
-                              fit: BoxFit.cover,
+                  Center(
+                    child: Stack(
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 80.0,
+                          backgroundImage: provider.file == null
+                              ? AssetImage("assets/images/profile.jpeg")
+                              : FileImage(provider.file),
+                        ),
+                        Positioned(
+                          bottom: 20.0,
+                          right: 20.0,
+                          child: InkWell(
+                            onTap: () {
+                              provider.selectFile();
+                            },
+                            child: Icon(
+                              Icons.camera_alt,
+                              color: Colors.teal,
+                              size: 28.0,
                             ),
+                          ),
+                        ),
+                      ],
                     ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     provider.selectFile();
+                    //   },
+                    //   child: CircleAvatar(
+                    //     backgroundImage: Image.network(),
+                    //     radius: 80,
+                    //     child: provider.file == null
+                    //         ? Container()
+                    //         : Image.file(
+                    //             provider.file,
+                    //             fit: BoxFit.cover,
+                    //           ),
+                    //   ),
+                    // child: Container(
+                    //   height: 200,
+                    //   width: 200,
+                    //   color: Colors.grey,
+                    //   child: provider.file == null
+                    //       ? Container()
+                    //       : Image.file(
+                    //           provider.file,
+                    //           fit: BoxFit.cover,
+                    //         ),
+                    // ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   CustomTextField(
                     hint: 'first Name',
@@ -80,6 +118,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     controller: provider.fNameController,
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   CustomTextField(
                     hint: 'last Name',
                     prefixIcon: Icon(
@@ -87,6 +128,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: Colors.grey,
                     ),
                     controller: provider.lNameController,
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   CustomTextField(
                     hint: 'Email',
@@ -97,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     controller: provider.emailController,
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   CustomTextPasswordField(
                     textInputType: TextInputType.visiblePassword,
@@ -114,40 +158,62 @@ class _RegisterPageState extends State<RegisterPage> {
                       });
                     },
                   ),
-                  Container(
-                    child: DropdownButton<CountryModel>(
-                      isExpanded: true,
-                      underline: Container(),
-                      onChanged: (x) {
-                        provider.selectCountry(x);
-                      },
-                      value: provider.selectedCountry,
-                      items: provider.countries.map((e) {
-                        return DropdownMenuItem<CountryModel>(
-                          child: Text(e.name),
-                          value: e,
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  Container(
-                    child: DropdownButton<dynamic>(
-                      isExpanded: true,
-                      underline: Container(),
-                      onChanged: (x) {
-                        provider.selectCity(x);
-                      },
-                      value: provider.selectedCity,
-                      items: provider.cities.map((e) {
-                        return DropdownMenuItem<dynamic>(
-                          child: Text(e),
-                          value: e,
-                        );
-                      }).toList(),
-                    ),
-                  ),
                   SizedBox(
-                    height: 50,
+                    height: 10,
+                  ),
+                  provider.countries == null
+                      ? Container()
+                      : Container(
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          child: DropdownButton<CountryModel>(
+                            isExpanded: true,
+                            underline: Container(),
+                            onChanged: (x) {
+                              provider.selectCountry(x);
+                            },
+                            value: provider.selectedCountry,
+                            items: provider.countries.map((e) {
+                              return DropdownMenuItem<CountryModel>(
+                                child: Text(e.name),
+                                value: e,
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  provider.cities == null
+                      ? Container()
+                      : Container(
+                          padding: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          child: DropdownButton<dynamic>(
+                            isExpanded: true,
+                            underline: Container(),
+                            onChanged: (x) {
+                              provider.selectCity(x);
+                            },
+                            value: provider.selectedCity,
+                            items: provider.cities.map((e) {
+                              return DropdownMenuItem<dynamic>(
+                                child: Text(e),
+                                value: e,
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                  SizedBox(
+                    height: 10,
                   ),
                   CustomButton(
                     function: () {
@@ -159,7 +225,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     label: 'Sign Up',
                   ),
                   SizedBox(
-                    height: 220,
+                    height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
