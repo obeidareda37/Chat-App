@@ -1,7 +1,6 @@
 class RegisterRequest {
   String id;
   String fname;
-  String lname;
   String password;
   String city;
   String country;
@@ -11,7 +10,6 @@ class RegisterRequest {
   RegisterRequest({
     this.id,
     this.fname,
-    this.lname,
     this.password,
     this.city,
     this.country,
@@ -20,14 +18,21 @@ class RegisterRequest {
   });
 
   toMap() {
-    return {
-      'id': this.id,
-      'fname': this.fname,
-      'lname': this.lname,
-      'city': this.city,
-      'country': this.country,
-      'email': this.email,
-      'imageUrl': this.imageUrl,
-    };
+    return imageUrl == null
+        ? {
+            'id': this.id,
+            'fname': this.fname,
+            'city': this.city,
+            'country': this.country,
+            'email': this.email,
+          }
+        : {
+            'id': this.id,
+            'fname': this.fname,
+            'city': this.city,
+            'country': this.country,
+            'email': this.email,
+            'imageUrl': this.imageUrl,
+          };
   }
 }

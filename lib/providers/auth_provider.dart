@@ -24,11 +24,11 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController fNameController = TextEditingController();
-  TextEditingController lNameController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   List<UserModel> users = List<UserModel>();
   UserModel user;
+  String myId;
 
   getUserFromFirestore() async {
     String userId = AuthHelper.authHelper.getUserId();
@@ -40,7 +40,6 @@ class AuthProvider extends ChangeNotifier {
     emailController.clear();
     passwordController.clear();
     fNameController.clear();
-    lNameController.clear();
     countryController.clear();
     cityController.clear();
   }
@@ -94,7 +93,6 @@ class AuthProvider extends ChangeNotifier {
         imageUrl: imageUrl,
         id: userCredential.user.uid,
         fname: fNameController.text,
-        lname: lNameController.text,
         city: selectedCity,
         country: selectedCountry.name,
         email: emailController.text,
@@ -118,7 +116,7 @@ class AuthProvider extends ChangeNotifier {
   login() async {
     UserCredential userCredential = await AuthHelper.authHelper
         .signIn(emailController.text, passwordController.text);
-    SpHelper.spHelper.saveUser(true);
+    // SpHelper.spHelper.saveUser(true);
 
     // bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
     // if (isVerifiedEmail) {
@@ -135,6 +133,18 @@ class AuthProvider extends ChangeNotifier {
     resetController();
   }
 
+  checkLogin() {
+    bool isLoggedIn = AuthHelper.authHelper.checkUserLoging();
+    print(FirebaseAuth.instance.currentUser);
+    if (isLoggedIn) {
+      this.myId = AuthHelper.authHelper.getUserId();
+      getAllUserFromFirestore();
+      RouteHelper.routeHelper.goToPageReplacement(HomePage.routeName);
+    } else {
+      RouteHelper.routeHelper.goToPageReplacement(WelcomePage.routeName);
+    }
+  }
+
   resetPassword() async {
     AuthHelper.authHelper.resetPassword(emailController.text);
     RouteHelper.routeHelper.goToPageReplacement(LoginPage.routeName);
@@ -147,10 +157,10 @@ class AuthProvider extends ChangeNotifier {
     AuthHelper.authHelper.logOut();
   }
 
-  Future<List<UserModel>> getAllUserFromFirestore() async {
+   getAllUserFromFirestore() async {
     users = await FirebaseHelpers.firebaseHelpers.getAllUsersFromFirestore();
-    return users;
-    print(users.length);
+    users.removeWhere((element) => element.id==myId);
+      notifyListeners();
   }
 
   // checkLogin() {
@@ -163,14 +173,14 @@ class AuthProvider extends ChangeNotifier {
   //   }
   // }
   fillControllers() {
-    fNameController.text = user.fName;
-    lNameController.text = user.lName;
+    fNameController.text = user.fname;
     countryController.text = user.country;
     cityController.text = user.city;
     emailController.text = user.email;
   }
 
   File updateFile;
+
   captureUpdateProfileImage() async {
     XFile file = await ImagePicker().pickImage(source: ImageSource.gallery);
     this.updateFile = File(file.path);
@@ -182,21 +192,18 @@ class AuthProvider extends ChangeNotifier {
     if (updateFile != null) {
       imageUrl = await FirebaseStorageHelper.firebaseStorageHelper
           .uploadImage(updateFile);
-      notifyListeners();
     }
     UserModel userModel = imageUrl == null
         ? UserModel(
             city: cityController.text,
             country: countryController.text,
-            fName: fNameController.text,
-            lName: lNameController.text,
+            fname: fNameController.text,
             id: user.id,
           )
         : UserModel(
             city: cityController.text,
             country: countryController.text,
-            fName: fNameController.text,
-            lName: lNameController.text,
+            fname: fNameController.text,
             id: user.id,
             imageUrl: imageUrl,
           );

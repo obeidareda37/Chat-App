@@ -82,7 +82,7 @@ class AuthHelper {
   }
 
   bool checkUserLoging() {
-    if (firebaseAuth.currentUser == null) {
+    if (firebaseAuth.currentUser == null || firebaseAuth.currentUser == 0) {
       return false;
     } else {
       return true;

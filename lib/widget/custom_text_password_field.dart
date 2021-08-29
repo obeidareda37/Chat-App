@@ -8,6 +8,7 @@ class CustomTextPasswordField extends StatelessWidget {
   bool obscureText;
   Function onTap;
   TextInputType textInputType;
+  Function(String value) validate;
 
   CustomTextPasswordField({
     this.hint,
@@ -17,6 +18,7 @@ class CustomTextPasswordField extends StatelessWidget {
     this.obscureText,
     this.onTap,
     this.textInputType,
+    this.validate
   });
 
   @override
@@ -25,6 +27,7 @@ class CustomTextPasswordField extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: TextFormField(
         keyboardType: textInputType,
+        validator: validate,
         obscureText: obscureText,
         controller: this.controller,
         decoration: InputDecoration(

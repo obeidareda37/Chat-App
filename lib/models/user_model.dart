@@ -5,8 +5,7 @@ class UserModel {
   String email;
   String city;
   String country;
-  String fName;
-  String lName;
+  String fname;
   String imageUrl;
 
   UserModel({
@@ -14,8 +13,7 @@ class UserModel {
     @required this.email,
     @required this.city,
     @required this.country,
-    @required this.fName,
-    @required this.lName,
+    @required this.fname,
     @required this.imageUrl,
   });
 
@@ -24,8 +22,7 @@ class UserModel {
     this.email = map['email'];
     this.city = map['city'];
     this.country = map['country'];
-    this.fName = map['fname'];
-    this.lName = map['lname'];
+    this.fname = map['fname'];
     this.imageUrl = map['imageUrl'];
   }
 
@@ -33,8 +30,7 @@ class UserModel {
     return {
       'city': this.city,
       'country': this.country,
-      'fname': this.fName,
-      'lname': this.lName,
+      'fname': this.fname,
       'imageUrl': this.imageUrl,
     };
   }

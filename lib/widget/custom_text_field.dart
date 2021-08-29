@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   Icon suffixIcon;
   TextInputType textInputType;
   Function onChange;
+  Function(String value) validate;
 
   CustomTextField({
     this.hint,
@@ -15,6 +16,7 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.textInputType,
     this.onChange,
+    this.validate
   });
 
   @override
@@ -22,6 +24,7 @@ class CustomTextField extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       child: TextFormField(
+        validator:validate ,
         keyboardType: textInputType,
         controller: this.controller,
         onChanged: onChange,

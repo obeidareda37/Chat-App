@@ -22,14 +22,13 @@ class _ProfilePageState extends State<UpdateProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text('Update Profile'),
         actions: [
           IconButton(
             onPressed: () {
               Provider.of<AuthProvider>(context,listen: false).updateProfile();
-
             },
             icon: Icon(Icons.done),
           ),
@@ -39,8 +38,13 @@ class _ProfilePageState extends State<UpdateProfilePage> {
         builder: (context, provider, x) {
           return SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SizedBox(
+                  height: 40,
+                ),
                 GestureDetector(
                   onTap: () {
                     provider.captureUpdateProfileImage();
@@ -55,8 +59,7 @@ class _ProfilePageState extends State<UpdateProfilePage> {
                           backgroundImage: FileImage(provider.updateFile),
                         ),
                 ),
-                UpdateProfileItemWidget('First Name', provider.fNameController),
-                UpdateProfileItemWidget('last Name', provider.lNameController),
+                UpdateProfileItemWidget('Full Name', provider.fNameController),
                 UpdateProfileItemWidget(
                     'Country Name', provider.countryController),
                 UpdateProfileItemWidget('City Name', provider.cityController),
