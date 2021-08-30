@@ -18,21 +18,13 @@ class RegisterRequest {
   });
 
   toMap() {
-    return imageUrl == null
-        ? {
-            'id': this.id,
-            'fname': this.fname,
-            'city': this.city,
-            'country': this.country,
-            'email': this.email,
-          }
-        : {
-            'id': this.id,
-            'fname': this.fname,
-            'city': this.city,
-            'country': this.country,
-            'email': this.email,
-            'imageUrl': this.imageUrl,
-          };
+    return {
+      'id': this.id,
+      'fname': this.fname,
+      'city': this.city,
+      'country': this.country,
+      'email': this.email,
+      'imageUrl': this.imageUrl,
+    };
   }
 }

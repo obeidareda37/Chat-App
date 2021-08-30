@@ -22,13 +22,15 @@ class _ProfilePageState extends State<UpdateProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Color(0xff1E58B6),
         title: Text('Update Profile'),
         actions: [
           IconButton(
             onPressed: () {
-              Provider.of<AuthProvider>(context,listen: false).updateProfile();
+              Provider.of<AuthProvider>(context, listen: false).updateProfile();
             },
             icon: Icon(Icons.done),
           ),
@@ -42,27 +44,71 @@ class _ProfilePageState extends State<UpdateProfilePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(
-                  height: 40,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    provider.captureUpdateProfileImage();
-                  },
-                  child: provider.updateFile == null
-                      ? CircleAvatar(
-                          radius: 80,
-                          backgroundImage: NetworkImage(provider.user.imageUrl),
-                        )
-                      : CircleAvatar(
-                          radius: 80,
-                          backgroundImage: FileImage(provider.updateFile),
+                Stack(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(40),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Color(0xff1E58B6),
+                      ),
+                      child: provider.updateFile == null
+                          ? CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 84,
+                              child: CircleAvatar(
+                                radius: 80,
+                                backgroundImage:
+                                    NetworkImage(provider.user.imageUrl),
+                              ),
+                            )
+                          : CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 84,
+                              child: CircleAvatar(
+                                radius: 80,
+                                backgroundImage: FileImage(provider.updateFile),
+                              ),
+                            ),
+                    ),
+                    Positioned(
+                      bottom: 52.0,
+                      right: 120.0,
+                      child: InkWell(
+                        onTap: () {
+                          provider.captureUpdateProfileImage();
+                        },
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.blueGrey,
+                          size: 28.0,
                         ),
+                      ),
+                    ),
+                  ],
                 ),
-                UpdateProfileItemWidget('Full Name', provider.fNameController),
-                UpdateProfileItemWidget(
-                    'Country Name', provider.countryController),
-                UpdateProfileItemWidget('City Name', provider.cityController),
+                Transform.translate(
+                  offset: Offset(0,-20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(25),
+                        topLeft: Radius.circular(25),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        UpdateProfileItemWidget(
+                            'Full Name', provider.fNameController),
+                        UpdateProfileItemWidget(
+                            'Country Name', provider.countryController),
+                        UpdateProfileItemWidget(
+                            'City Name', provider.cityController),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           );

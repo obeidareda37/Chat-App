@@ -2,7 +2,9 @@ import 'package:chat_app/helpers/auth_helper.dart';
 import 'package:chat_app/models/country_model.dart';
 import 'package:chat_app/models/register_request.dart';
 import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/providers/auth_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class FirebaseHelpers {
   FirebaseHelpers._();
@@ -10,10 +12,13 @@ class FirebaseHelpers {
   static FirebaseHelpers firebaseHelpers = FirebaseHelpers._();
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
-
-  Stream<QuerySnapshot<Map<String, dynamic>>> getFirestoreStrem(){
-    return firebaseFirestore.collection('Chats').snapshots();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFirestoreStrem() {
+    return firebaseFirestore
+        .collection('Chats')
+        .orderBy('dateTime', descending: false)
+        .snapshots();
   }
+
   addMessageToFirbaseFirestore(Map map) async {
     firebaseFirestore.collection('Chats').add({
       ...map,

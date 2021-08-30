@@ -208,19 +208,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       function: () {
                         if (provider.file == null) {
                           print('chose photo');
+
                           CustomDialog.customDialog.showCustomDialog(
                               message: 'الرجاء اختيار الصورة');
                         }
 
                         if (formKey.currentState.validate() &&
                             provider.file != null) {
-                          return;
+                          return provider.register();
                         } else {
                           print('UnSucsseflue');
                         }
                         setState(() {
                           print("doneeee");
-                          provider.register();
                         });
                       },
                       backgroundColor: Color(0xff1E58B6),

@@ -67,7 +67,8 @@ class _WelcomePageState extends State<WelcomePage> {
                     setState(
                       () {
                         activeButton = 1;
-                        RouteHelper.routeHelper.goToPage(LoginPage.routeName);
+                        RouteHelper.routeHelper
+                            .goToPageReplacement(LoginPage.routeName);
                       },
                     );
                   },
@@ -85,8 +86,8 @@ class _WelcomePageState extends State<WelcomePage> {
                     setState(
                       () {
                         activeButton = 2;
-                        RouteHelper.routeHelper.goToPage(RegisterPage.routeName);
-
+                        RouteHelper.routeHelper
+                            .goToPageReplacement(RegisterPage.routeName);
                       },
                     );
                   },

@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:chat_app/auth/view/home_page.dart';
 import 'package:chat_app/auth/view/login_page.dart';
 import 'package:chat_app/auth/view/welcome_page.dart';
 import 'package:chat_app/helpers/auth_helper.dart';
 import 'package:chat_app/helpers/firestorage_helper.dart';
 import 'package:chat_app/helpers/firestore_helper.dart';
-import 'package:chat_app/helpers/shared_pref.dart';
 import 'package:chat_app/models/country_model.dart';
 import 'package:chat_app/models/register_request.dart';
 import 'package:chat_app/models/user_model.dart';
@@ -116,20 +114,11 @@ class AuthProvider extends ChangeNotifier {
   login() async {
     UserCredential userCredential = await AuthHelper.authHelper
         .signIn(emailController.text, passwordController.text);
-    // SpHelper.spHelper.saveUser(true);
-
-    // bool isVerifiedEmail = AuthHelper.authHelper.checkEmailVerification();
-    // if (isVerifiedEmail) {
     FirebaseHelpers.firebaseHelpers
         .getUserFromFirestore(userCredential.user.uid);
+    this.myId = AuthHelper.authHelper.getUserId();
+    getUserFromFirestore();
     RouteHelper.routeHelper.goToPageReplacement(HomePage.routeName);
-    // } else {
-    //   CustomDialog.customDialog.showCustomDialog(
-    //     message:
-    //         'you have to verify your email, press ok to send another email',
-    //     function: sendVerification(),
-    //   );
-    // }
     resetController();
   }
 
@@ -138,9 +127,12 @@ class AuthProvider extends ChangeNotifier {
     print(FirebaseAuth.instance.currentUser);
     if (isLoggedIn) {
       this.myId = AuthHelper.authHelper.getUserId();
+      getUserFromFirestore();
       getAllUserFromFirestore();
       RouteHelper.routeHelper.goToPageReplacement(HomePage.routeName);
     } else {
+      getUserFromFirestore();
+      getAllUserFromFirestore();
       RouteHelper.routeHelper.goToPageReplacement(WelcomePage.routeName);
     }
   }
