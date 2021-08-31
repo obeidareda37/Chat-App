@@ -70,6 +70,17 @@ class AuthProvider extends ChangeNotifier {
   ////////////////////////////////////////////////////////////////
   /// upload Image
 
+  sendImageToChat([String message]) async{
+    XFile file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    File file2=File(file.path);
+    String imageUrl = await FirebaseStorageHelper.firebaseStorageHelper.uploadImage(file2,'chats');
+    FirebaseHelpers.firebaseHelpers.addMessageToFirbaseFirestore({
+      'userId':this.myId,
+      'dateTime':DateTime.now(),
+      'message':message??'',
+      'imageUrl':imageUrl,
+    });
+  }
   File file;
 
   selectFile() async {

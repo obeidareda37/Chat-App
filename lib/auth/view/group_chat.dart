@@ -24,6 +24,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
   TextEditingController messageController = TextEditingController();
   String message;
   List<Map> Message;
+  ScrollController controller = new ScrollController();
 
   sendTofirestore() async {
     FirebaseHelpers.firebaseHelpers.addMessageToFirbaseFirestore({
@@ -60,13 +61,6 @@ class _GroupChatPageState extends State<GroupChatPage> {
       ),
       child: Scaffold(
         backgroundColor: Colors.white,
-        // bottomNavigationBar: CustomBottomNavigationChatState(
-        //   chatController: messageController,
-        //   onTapSend: () {
-        //     sendTofirestore();
-        //     messageController.clear();
-        //   },
-        // ),
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
           leading: IconButton(
@@ -117,68 +111,70 @@ class _GroupChatPageState extends State<GroupChatPage> {
               child: Column(
                 children: [
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 20, top: 10),
-                        child:
-                            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                          stream: FirebaseHelpers.firebaseHelpers
-                              .getFirestoreStrem(),
-                          builder: (context, datasnapshot) {
-                            if (!datasnapshot.hasData) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            QuerySnapshot<Map<String, dynamic>> querySnapShot =
-                                datasnapshot.data;
-                            Message = querySnapShot.docs
-                                .map((e) => e.data())
-                                .toList();
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 20, top: 10),
+                      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream:
+                            FirebaseHelpers.firebaseHelpers.getFirestoreStrem(),
+                        builder: (context, datasnapshot) {
+                          Future.delayed(Duration(milliseconds: 100))
+                              .then((value) {
+                            controller.animateTo(
+                                controller.position.maxScrollExtent,
+                                duration: Duration(milliseconds: 100),
+                                curve: Curves.easeInOut);
+                          });
+                          if (!datasnapshot.hasData) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          QuerySnapshot<Map<String, dynamic>> querySnapShot =
+                              datasnapshot.data;
+                          Message =
+                              querySnapShot.docs.map((e) => e.data()).toList();
 
-                            return Message == null
-                                ? Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return Message[index]['userId'] ==
-                                              provider.myId
-                                          ? Directionality(
-                                              textDirection: TextDirection.rtl,
-                                              child: CustomChatBetweenTwoClient(
-                                                color: Color(0xff2978F6),
-                                                right: true,
-                                                message: Message[index]
-                                                    ['message'],
-                                                image: Message[index]
-                                                        ['imageUrl'] ??
-                                                    'https://i.pinimg.com/originals/70/c7/af/70c7afacdfb4016f786753f9e5071fc4.jpg',
-                                                name: Message[index]['fname'] ??
-                                                    'Guest',
-                                              ),
-                                            )
-                                          : Directionality(
+                          return Message == null
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ListView.builder(
+                                  controller: controller,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return Message[index]['userId'] ==
+                                            provider.myId
+                                        ? Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: CustomChatBetweenTwoClient(
+                                              color: Color(0xff2978F6),
+                                              right: true,
+                                              message: Message[index]
+                                                  ['message'],
+                                              image: Message[index]
+                                                      ['imageUrl'] ??
+                                                  'https://i.pinimg.com/originals/70/c7/af/70c7afacdfb4016f786753f9e5071fc4.jpg',
+                                              name: Message[index]['fname'] ??
+                                                  'Guest',
+                                            ),
+                                          )
+                                        : Directionality(
+                                            textDirection: TextDirection.ltr,
+                                            child: CustomChatBetweenTwoClient(
                                               textDirection: TextDirection.ltr,
-                                              child: CustomChatBetweenTwoClient(
-                                                textDirection:
-                                                    TextDirection.ltr,
-                                                right: false,
-                                                color: Color(0xffE4E4E4),
-                                                message: Message[index]
-                                                    ['message'],
-                                                image: Message[index]
-                                                        ['imageUrl'] ??
-                                                    'https://i.pinimg.com/originals/70/c7/af/70c7afacdfb4016f786753f9e5071fc4.jpg',
-                                                name: Message[index]['fname'] ??
-                                                    'Guest',
-                                              ),
-                                            );
-                                    },
-                                    itemCount: Message.length,
-                                  );
-                          },
-                        ),
+                                              right: false,
+                                              color: Color(0xffE4E4E4),
+                                              message: Message[index]
+                                                  ['message'],
+                                              image: Message[index]
+                                                      ['imageUrl'] ??
+                                                  'https://i.pinimg.com/originals/70/c7/af/70c7afacdfb4016f786753f9e5071fc4.jpg',
+                                              name: Message[index]['fname'] ??
+                                                  'Guest',
+                                            ),
+                                          );
+                                  },
+                                  itemCount: Message.length,
+                                );
+                        },
                       ),
                     ),
                   ),
@@ -207,8 +203,14 @@ class _GroupChatPageState extends State<GroupChatPage> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          child: IconButton(
+                            icon: Icon(Icons.attach_file),
+                            onPressed: () {
+                              provider.sendImageToChat();
+                            },
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.only(right: 10),

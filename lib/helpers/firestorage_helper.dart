@@ -9,11 +9,11 @@ class FirebaseStorageHelper {
       FirebaseStorageHelper._();
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
-  Future<String> uploadImage(File file) async {
+  Future<String> uploadImage(File file,[folderName ='profiles']) async {
     //1-make a refrence for this file in firebase storage
     String filePath = file.path;
     String fileName = filePath.split('/').last;
-    String path = 'images/profiles/$fileName';
+    String path = 'images/$folderName/$fileName';
     Reference reference = firebaseStorage.ref(path);
 
     //2- upload the file to the defined reference
