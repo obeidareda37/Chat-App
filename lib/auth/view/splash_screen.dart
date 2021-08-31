@@ -1,10 +1,4 @@
-import 'dart:async';
-
-import 'package:chat_app/auth/view/home_page.dart';
-import 'package:chat_app/auth/view/welcome_page.dart';
-import 'package:chat_app/helpers/shared_pref.dart';
 import 'package:chat_app/providers/auth_provider.dart';
-import 'package:chat_app/service/routes_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +32,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(
+            image: AssetImage('assets/images/splash2.png'),
+          ),
+        ),
+      ),
     );
   }
 }

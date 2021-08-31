@@ -1,4 +1,5 @@
 import 'package:chat_app/auth/view/home_page.dart';
+import 'package:chat_app/helpers/auth_helper.dart';
 import 'package:chat_app/helpers/firestore_helper.dart';
 import 'package:chat_app/providers/auth_provider.dart';
 import 'package:chat_app/service/routes_helpers.dart';
@@ -69,13 +70,38 @@ class _GroupChatPageState extends State<GroupChatPage> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black),
           leading: IconButton(
-              onPressed: () {
-                RouteHelper.routeHelper.goToPageReplacement(HomePage.routeName);
-              },
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: Color(0xff1E58B6),
-              )),
+            onPressed: () {
+              RouteHelper.routeHelper.goToPageReplacement(HomePage.routeName);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xff1E58B6),
+            ),
+          ),
+          actions: [
+            PopupMenuButton(
+                onSelected: (item) => onSelected(context, item),
+                itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 0,
+                        child: CustomText(
+                          text: 'Profile',
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 1,
+                        child: CustomText(
+                          text: 'Clear Chat',
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 2,
+                        child: CustomText(
+                          text: 'LogOut',
+                        ),
+                      ),
+                    ]),
+          ],
           automaticallyImplyLeading: true,
           title: CustomText(
             text: 'Group Chat',
@@ -206,5 +232,22 @@ class _GroupChatPageState extends State<GroupChatPage> {
         ),
       ),
     );
+  }
+
+  onSelected(BuildContext context, item) async {
+    switch (item) {
+      case 0:
+        print('Profile Clicked');
+        RouteHelper.routeHelper.goToPageReplacement(HomePage.routeName);
+        break;
+      case 1:
+        print('Clear Chat');
+        await FirebaseHelpers.firebaseHelpers.deleteAllChat();
+        break;
+      case 2:
+        print('LogOut');
+        AuthHelper.authHelper.logOut();
+        break;
+    }
   }
 }
