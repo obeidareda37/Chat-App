@@ -25,6 +25,7 @@ class FirebaseHelpers {
       'userId': AuthHelper.authHelper.getUserId(),
     });
   }
+  // distributionUrl=https\://services.gradle.org/distributions/gradle-7.1.1-bin.zip
 
   addUserToFirestore(RegisterRequest registerRequest) async {
     try {

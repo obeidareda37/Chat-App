@@ -111,6 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (value.isEmpty || value == '') {
                           return 'Please Enter Email Address';
                         }
+
                         return null;
                       },
                       hint: 'Email',
